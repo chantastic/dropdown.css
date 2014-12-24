@@ -1,0 +1,27 @@
+{
+  "name": "dropdown.css",
+  "version": "0.0.1",
+  "description": "css dropdown WIP",
+  "main": "dst/dropdown.css",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chantastic/dropdown.css.git"
+  },
+  "keywords": [
+    "css",
+    "dropdown",
+    "js"
+  ],
+  "author": "Michael Chan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chantastic/dropdown.css/issues"
+  },
+  "homepage": "https://github.com/chantastic/dropdown.css"
+}
