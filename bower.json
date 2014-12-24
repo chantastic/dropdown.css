@@ -1,0 +1,23 @@
+{
+  "name": "dropdown.css",
+  "version": "0.0.1",
+  "homepage": "https://github.com/chantastic/dropdown.css",
+  "description": "css dropdown WIP",
+  "main": "dst/dropdown.css",
+  "keywords": [
+    "css",
+    "dropdown",
+    "js"
+  ],
+  "authors": [
+    "Michael Chan"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
