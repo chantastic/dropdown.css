@@ -1,0 +1,11 @@
+var handleDropdownClick = function (e) {
+  var dropdownNode = this;
+
+  if(e.target.getAttribute('aria-haspopup') === 'true') {
+    console.log(e.target); 
+  }
+};
+
+$(function () {
+  $(document).on('click', '.dropdown', handleDropdownClick);
+});
