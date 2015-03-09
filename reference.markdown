@@ -10,11 +10,11 @@ The dropdown container.
 <div class="dropdown" aria-expanded="false">
 ```
 
-### `[aria-expanded="false"]`
+##### `[aria-expanded="false"]`
 
 When the `aria-expanded` prop is `false`, the dropdown is hidden.
 
-### `[aria-expanded="true"]`
+##### `[aria-expanded="true"]`
 
 When the `aria-expanded` prop is `true`, the dropdown is shown.
 
