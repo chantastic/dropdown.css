@@ -7,6 +7,7 @@
     "example": "examples"
   },
   "scripts": {
+    "build": "cleancss --s1 -o dist/dropdown.min.css build/index.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/chantastic/dropdown.css/issues"
   },
-  "homepage": "https://github.com/chantastic/dropdown.css"
+  "homepage": "https://github.com/chantastic/dropdown.css",
+  "devDependencies": {
+    "clean-css": "^3.4.12"
+  }
 }
