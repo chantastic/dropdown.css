@@ -1,0 +1,11 @@
+.dropdown-action {
+  padding: 10px;
+
+  cursor: pointer;
+}
+
+.dropdown-action:focus,
+.dropdown-action:hover {
+  border-radius: 3px;
+  background: #dbdbdb;
+}
