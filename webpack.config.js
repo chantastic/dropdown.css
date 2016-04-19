@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./build/index.js",
+  entry: "./src/index.js",
   output: {
     path: __dirname + "/dist",
     filename: "dropdown.min.js",
