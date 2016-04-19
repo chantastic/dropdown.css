@@ -1,20 +1,20 @@
 module.exports = {
   entry: "./build/index.js",
   output: {
-    path: __dirname + '/dist',
+    path: __dirname + "/dist",
     filename: "dropdown.min.js",
-    libraryTarget: "umd"
+    libraryTarget: "umd",
   },
   module: {
     loaders: [
       {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
+        loader: "babel",
         query: {
-          presets: ['es2015']
-        }
-      }
-    ]
-  }
+          presets: ["es2015"],
+        },
+      },
+    ],
+  },
 }
