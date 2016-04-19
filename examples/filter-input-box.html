@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <!-- minions for styling all the other stuff -->
+  <link rel="stylesheet" href="http://chantastic.s3.amazonaws.com/minions.0.0.3.min.css" />
+
+  <link rel="stylesheet" href="../src/dropdown.css" />
+  <link rel="stylesheet" href="../src/dropdown-trigger.css" />
+  <link rel="stylesheet" href="../src/dropdown-content.css" />
+  <link rel="stylesheet" href="../src/dropdown-content-header.css" />
+  <link rel="stylesheet" href="../src/dropdown-content-footer.css" />
+  <link rel="stylesheet" href="../src/dropdown-content-dismiss.css" />
+  <link rel="stylesheet" href="../src/dropdown-content-hr.css" />
+  <link rel="stylesheet" href="../src/dropdown-group.css" />
+  <link rel="stylesheet" href="../src/dropdown-action.css" />
+  <link rel="stylesheet" href="../src/dropdown-menu.css" />
+</head>
+
+<body>
+  <div style="max-width: 600px; margin: 3em auto 0;">
+    <form class="d-f">
+      <div class="dropdown" aria-expanded="false">
+
+        <button aria-haspopup="true"
+          id="addFilterDropdown"
+          role="button"
+          type="button"
+        >
+          Filter by Category
+        </button>
+
+        <div
+          class="dropdown-content"
+          aria-labelledby="addFilterDropdown"
+        >
+          test
+          <button
+            type="button"
+            aria-label="close">&times;</button>
+        </div>
+      </div>
+
+      <input type="text" class="f-1" />
+    </form>
+  </div>
+
+  <script type="text/javascript"
+          src="https://code.jquery.com/jquery-2.1.3.js"></script>
+
+  <script type="text/javascript"
+          src="./js/app.js"></script>
+
+  <script type="text/javascript"
+          src="../dist/dropdown.min.js"></script>
+</body>
+</html>
