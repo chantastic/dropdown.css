@@ -1,3 +1,4 @@
 $(function () {
-  Dropdown.prototype.addDocumentListeners();
+  $(document).on('click', '.dropdown', handleDropdownEvents);
+  $(document).on('keyup', '.dropdown', handleDropdownEvents);
 });
