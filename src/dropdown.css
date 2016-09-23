@@ -1,29 +1,14 @@
 /*! minions.css | MIT License | https://github.com/chantastic/dropdown.css */
-
 .dropdown {
   position: relative;
+  display: inline-block;
 }
 
-.dropdown[aria-expanded=true]::after {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+.dropdown-content { position: absolute }
 
-  width: 100%;
-  height: 100%;
-
-  content: '';
-}
-
-
-.dropdown[aria-expanded=false] .dropdown-content {
-  display: none;
-}
+.dropdown[aria-expanded=false] .dropdown-content { display: none }
 
 .dropdown[aria-expanded=true] .dropdown-content {
-  z-index: 1;
-
   display: block;
+  z-index: 1;
 }

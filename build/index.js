@@ -1,45 +1,84 @@
-function closeDropdown (node) {
-  node.setAttribute("aria-expanded", "false")
-  node.querySelector("[aria-haspopup]").focus()
+const includes = require("lodash.includes")
+
+const { closest } = require("./element.js")
+
+const {
+  contract,
+  contractAll,
+  focusDisclosureButton,
+  focusCloseLabel,
+  toggle,
+} = require("./popup.js")
+
+function isNodeCloseButton (node) {
+  return (
+    node.getAttribute("aria-label") &&
+    node.getAttribute("aria-label") === "close"
+  )
 }
 
-function toggleDropdown (node) {
-  if(node.getAttribute("aria-expanded") === "false") {
-    node.setAttribute("aria-expanded", "true")
-    node.querySelector("[aria-label=close]").focus()
-  } else {
-    node.setAttribute("aria-expanded", "false")
-  }
-}
-
-function handleDropdownEvents ({ target, type, keyCode }) {
-  const dropdownRootNode = this // jquery element
-
-  // if(e.type !== 'click') { return }
+function handleClickEvent (event) {
+  const { target } = event
+  const popup = closest(target, "[aria-expanded]")
 
   if(
-    keyCode === 27 &&
-    type === "keyup" &&
-    dropdownRootNode.classList.contains("dropdown")
+    !popup &&
+    document.querySelector("[aria-expanded=true]")
   ) {
-    console.log("inside esc")
-    closeDropdown(dropdownRootNode)
+    event.preventDefault()
+    return contractAll()
   }
 
-  if(type === "click" && target.classList.contains("dropdown")) {
-    console.log("outside click")
-    closeDropdown(dropdownRootNode)
+  if(!popup) return
+
+  if(isNodeCloseButton(target)) {
+    contract(popup)
+    focusDisclosureButton(popup)
+    return
   }
 
-  if(type === "click" && target.getAttribute("aria-haspopup") === "true") {
-    console.log("normal toggle")
-    toggleDropdown(dropdownRootNode)
-  }
-
-  if(type === "click" && target.getAttribute("aria-label") === "close") {
-    console.log("close clicked")
-    closeDropdown(dropdownRootNode)
-  }
+  if(target.getAttribute("aria-haspopup")) return toggle(popup)
 }
 
-module.exports = { handleDropdownEvents: handleDropdownEvents }
+function handleKeyupEvent ({ target }) {
+  const popup = closest(target, "[aria-expanded]")
+
+  // return early if no expanded popups
+  if(!document.querySelector("[aria-expanded=true]")) return
+
+  // contract all popups if esc not in popup but expanded popups exist
+  if(!popup) return contractAll()
+
+  // esc from disclosure button
+  if(target.getAttribute("aria-haspopup")) return contract(popup)
+
+  // esc from `close` button
+  if(isNodeCloseButton(target)) {
+    contract(popup)
+    focusDisclosureButton(popup)
+    return
+  }
+
+  // esc from within popup
+  return focusCloseLabel(popup)
+}
+
+function handlePopupEvent (event) {
+  const {
+    target,
+    type,
+    keyCode,
+  } = event
+
+  // guards
+
+  if(!includes(["click", "keyup"], type)) return
+
+  if(type === "keyup" && keyCode !== 27) return
+
+  if(type === "keyup") return handleKeyupEvent(event)
+
+  if(type === "click") return handleClickEvent(event)
+}
+
+module.exports = { handlePopupEvent }

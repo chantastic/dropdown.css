@@ -2,43 +2,236 @@
 <html>
 <head>
   <link rel="stylesheet" href="../src/dropdown.css" />
-  <link rel="stylesheet" href="../src/dropdown-trigger.css" />
-  <link rel="stylesheet" href="../src/dropdown-content.css" />
-  <link rel="stylesheet" href="../src/dropdown-content-header.css" />
-  <link rel="stylesheet" href="../src/dropdown-content-footer.css" />
-  <link rel="stylesheet" href="../src/dropdown-content-dismiss.css" />
-  <link rel="stylesheet" href="../src/dropdown-content-hr.css" />
-  <link rel="stylesheet" href="../src/dropdown-action.css" />
-  <link rel="stylesheet" href="../src/dropdown-menu.css" />
+  <style>
+    .dropdown-content {
+      margin-top: .5rem;
+      margin-bottom: .5rem;
+      padding: 1rem;
+      background-color: white;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.5);
+    }
+  </style>
 </head>
-<body>
-  <button> focus? </button>
-  <p>
-   I would like to put some stuff in the way to make sure that everything is
-   behaving the way that i think that it should be behaving and that there
-   aren't any hidden surprises with positioning.
-  </p>
-  <div class="dropdown" aria-expanded="false">
 
-    <button aria-haspopup="true"
-     class="dropdown-trigger"
-     id="sampleDropdown"
-     role="botton">
-      the button
+<body>
+
+  <h2>What's a Dropdown?</h2>
+  <p>This is a very simple Dropdown. It's not going to work in every case but I think it serves the 80% case well. It's a Dropdown that should be quite reasonable to debug.</p>
+  <p>In this implementation of Dropdowns, CSS and JS are seperated. They <strong>interact</strong> to create the Dropdown metaphor. They are not <strong>dependent</strong> on one another. You may use CSS of your own design and the JavaScript may be used for different popups.</p>
+
+  <h3>The JavaScript</h3>
+  <h4><code>aria-expanded</code>/<code>aria-haspopup</code></h4>
+  <p>The JavaScript APIs work directly with three attributes:</p>
+  <dl>
+    <dt><code>aria-expanded</code></dt>
+    <dd><strong>popup root</strong>. This is the containing for a popup. This element contains both button and content.</dd>
+
+    <dt><code>aria-haspopup</code></dt>
+    <dd><strong>popup disclosure button</strong> This is the button that toggles the visibility of the dropdown.</dd>
+
+    <dt><code>aria-label</code></dt>
+    <dd><strong>popup close button</strong> This is the button that closses the dropdown from the inside. This is important for accessibility, as you'll see in the examples.</dd>
+  </dl>
+
+
+  <h3>CSS</h3>
+  <h4><code>.dropdown</code>/<code>.dropdown-content</code></h4>
+  <p>The CSS API is extremely bare-bones. It provides only the structure needed to visibily toggle the Dropdown content, in response to to the <code>aria-expanded</code> attribute. For these examples I've provided a generic theme in the head of the document.</p>
+
+  <h2>JavaScript Usage</h2>
+  <h4><code>handlePopupEvent</code></h4>
+  <p>Out of the box, this library provides one global function: <code>handlePopupEvent</code>.
+  <p>It can be wired up like this:</p>
+  <code><pre>
+    document.addEventListener("click", handlePopupEvent);
+    document.addEventListener("keyup", handlePopupEvent);
+  </pre></code>
+  <p>Obviously you'll need to take precautions to make sure that these handlers are bound properly in your app, considering load order and things like Rails Turbolinks.</p>
+
+  <h2>Minimium Viable Dropdown</h2>
+  <p>This demonstrates the smallest possible Dropdown implementation.</p>
+  <div class="dropdown" aria-expanded="false">
+    <button aria-haspopup="true" type="button">
+      Minimal Dropdown
     </button>
 
-    <!-- <button id="dLabel" type="button" data&#45;toggle="dropdown" aria&#45;haspopup="true" role="button" aria&#45;expanded="false"> -->
+    <div class="dropdown-content">
+      Some Dropdown Stuff
+    </div>
+  </div>
 
-    <div class="dropdown-content" aria-labelledby="sampleDropdown">
+  <h2>Minimium Accessible Dropdown</h2>
+  <p>This demonstrates what I would consider the smallest Dropdown implementation with good Accessibility.</p>
+
+  <div class="dropdown" aria-expanded="false" >
+    <button
+      aria-haspopup="true"
+      id="minimumAccessibleDropdown"
+      role="button"
+      type="button"
+    >
+      Accessible Dropdown
+    </button>
+
+    <div
+      class="dropdown-content"
+      aria-labelledby="minimumAccessibleDropdown"
+    >
+      <header>
+        test
+
+        <button aria-label="close" >&times;</button>
+      </header>
+
+      <p>This dropdown is a little more accessible. It provides a few additional conveniences.</p>
+      <ul>
+        <li><code>role="button"</code> attribute on the disclosure button.</li>
+        <li><code>id="myId"</code> for the disclosure button. This is used to label the dropdown content.</li>
+        <li><code>aria-labelledby="myId"</code> for the dropdown content. This communicates where to find the dropdown's labeling id.</li>
+        <li>A titled header. While this isn't critical for accessibility it does provde some usability wins. Additionally, it provides a place for a dedicated 'close' button, which is better for accessibility.</li>
+        <li><code>aria-label="close"</code> for a dedicated close button. This is a accessibility win as it gives you something to focus inside the dropdown content, once opened.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Dropdown Gropus</h2>
+  <p>Dropdowns were design to interact well with other dropdowns. Clicking from one dropdown to the next will contract the previously opened Dropdown.</p>
+
+  <h3>Horizontal</h3>
+  <div style="display: flex">
+    <div class="dropdown" aria-expanded="false">
+      <button aria-haspopup="true" type="button">
+        First
+      </button>
+
+      <div class="dropdown-content" style="min-width: 300px">
+        Some Dropdown Stuff
+      </div>
+    </div>
+
+    <div class="dropdown" aria-expanded="false">
+      <button aria-haspopup="true" type="button">
+        Second
+      </button>
+
+      <div class="dropdown-content" style="min-width: 200px">
+        This one is 200px wide.
+      </div>
+    </div>
+
+    <div class="dropdown" aria-expanded="false">
+      <button aria-haspopup="true" type="button">
+        Third
+      </button>
+
+      <div class="dropdown-content" style="min-width: 400px">
+        This one is 400px wide.
+      </div>
+    </div>
+  </div>
+
+  <h3>Vertical</h3>
+  <div>
+    <div class="dropdown" aria-expanded="false">
+      <button aria-haspopup="true" type="button">
+        First
+      </button>
+
+      <div class="dropdown-content" style="min-width: 300px">
+        Some Dropdown Stuff
+      </div>
+    </div>
+
+    <div class="dropdown" aria-expanded="false">
+      <button aria-haspopup="true" type="button">
+        Second
+      </button>
+
+      <div class="dropdown-content" style="min-width: 200px">
+        This one is 200px wide.
+      </div>
+    </div>
+
+    <div class="dropdown" aria-expanded="false">
+      <button aria-haspopup="true" type="button">
+        Third
+      </button>
+
+      <div class="dropdown-content" style="min-width: 400px">
+        This one is 400px wide.
+      </div>
+    </div>
+  </div>
+
+  <h2>Prepended</h2>
+  <p>A dropdown may be prependend to a text input. This is needed by some apps.</p>
+  <form style="display:flex">
+    <div class="dropdown" aria-expanded="false">
+
+      <button
+        aria-haspopup="true"
+        role="button"
+        type="button"
+      >
+        Filter by Category
+      </button>
+
+      <div
+        class="dropdown-content"
+        role="menu"
+        tabindex="-1"
+        aria-controls="addFilterMenu"
+        aria-labelledby="addFilterDropdown"
+      >
+        test
+        <button
+          type="button"
+          aria-label="close">&times;</button>
+        <input type="text" />
+      </div>
+    </div>
+
+    <input type="text" style="flex: 1" />
+  </form>
+
+  <h2>Complex Dropdown</h2>
+  <p>This is a demonstration of how to organize complex content</p>
+  <div
+    class="dropdown"
+    aria-expanded="false"
+  >
+    <button
+      aria-haspopup="true"
+      id="sampleDropdown"
+      role="botton"
+      type="button"
+    >
+      Accessible Dropdown
+    </button>
+
+    <div
+      class="dropdown-content"
+      aria-labelledby="sampleDropdown"
+    >
       <header class="dropdown-content-header">
         test
-        <button class="dropdown-content-dismiss" aria-label="close"></button>
+
+        <button
+          class="dropdown-content-dismiss"
+          aria-label="close"
+        ></button>
+
       </header>
-      <p>
-        This is a dropdown, yo!
-      </p>
+
+      <p>This is a dropdown, yo!</p>
+
       <hr class="dropdown-content-hr">
-      <ul class="dropdown-menu" role="menu">
+
+      <ul
+        class="dropdown-menu"
+        role="menu"
+      >
         <li class="dropdown-action" role="menuitem">
           <a href="http://google.com">first</a>
         </li>
@@ -46,41 +239,50 @@
           <a href="http://google.com">second</a>
         </li>
       </ul>
-      <footer class="dropdown-content-footer">
 
-        <button class="dropdown-action"
-         style="float: left"
-         type="button">
+      <footer class="dropdown-content-footer">
+        <button
+          class="dropdown-action"
+          style="float: left"
+          type="button"
+        >
           test left
         </button>
 
-        <button class="dropdown-action"
-         type="button">
+        <button
+          class="dropdown-action"
+          type="button"
+        >
           test one
         </button>
 
-        <button class="dropdown-action"
-         type="button">
+        <button
+          class="dropdown-action"
+          type="button"
+        >
           test two
         </button>
       </footer>
     </div>
   </div>
 
-  <p>
-   I would like to put some stuff in the way to make sure that everything is
-   behaving the way that i think that it should be behaving and that there
-   aren't any hidden surprises with positioning.
-  </p>
-  <button> focus? </button>
+  <h2>Limitations</h2>
+  <p>There are a few things this implementation doesn't currently do. I honestly don't know if there are easy solutions for these. But they're in my minde</p>
+  <dl>
+    <dt><code>display</code></dt>
+    <dd><code>The display property plays a large role in the dismissability of a Dropdown. In <code>display:</code> an element will have a small that cannot be clicked to dismiss the Dropdown. This can be really frustrating. So, <code>.drpdown</code> defaults to <code>inline-block</code>. The immediate disadvantage of this is that you have to explicitly set the width of your <code>.dropdown-content</code>.</dd>
 
-  <script type="text/javascript"
-          src="https://code.jquery.com/jquery-2.1.3.js"></script>
+    <dt><code>preventDefault()</code></dt>
+    <dd>Dropdowns should prevent click-through when open. Anything you click (outside of another Dropdown) should server only to close the open Dropdown. This implementation prevents browser default actions with `preventDefault`. This is not ideal because the user will still see cursor changes for interactable content. An earlier version of this used the <code>.dropdown:after</code> pseudo-element to fix a big background over the top of everything. This worked but was clumbsy because <code>position: fixed</code> is not supported in Mobile Safari. It also requred some fragil <code>z-index</code> manuevering. I'd like to see a Dropdown that behave as close to a select as possible but that not be in the cards for an implementation that doesn't do DOM-pinnig.</dd>
 
-  <script type="text/javascript"
-          src="./js/app.js"></script>
+    <dt><code>no tethering</code></dt>
+    <dd>Implementations where a drpdown is removed and programatically appended to the bottom of the document can be tricky to reasona about and debug. This doesn't do any tethering, which means that it's subject to all the <code>z-index</code> and positioning challenges any other nested have. If you have a simple use case, this is a simple solution.</dd>
+  </dl>
 
   <script type="text/javascript"
           src="../dist/dropdown.min.js"></script>
+
+  <script type="text/javascript"
+          src="./js/app.js"></script>
 </body>
 </html>

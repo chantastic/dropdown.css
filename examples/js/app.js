@@ -1,4 +1,2 @@
-$(function () {
-  $(document).on("click", ".dropdown", handleDropdownEvents);
-  $(document).on("keyup", ".dropdown", handleDropdownEvents);
-});
+document.addEventListener("click", handlePopupEvent);
+document.addEventListener("keyup", handlePopupEvent);

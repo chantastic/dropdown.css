@@ -10,8 +10,8 @@
 
 <body>
   <div style="max-width: 600px; margin: 3em auto 0;">
-    <form class="d-f">
-      <div class="dropdown" aria-expanded="false">
+    <div class="d-f">
+      <div class="dropdown" id="1" aria-expanded="false">
 
         <button
           aria-haspopup="true"
@@ -36,8 +36,31 @@
         </div>
       </div>
 
-      <input type="text" class="f-1" />
-    </form>
+      <div class="dropdown" id="2"  aria-expanded="false">
+
+        <button
+          aria-haspopup="true"
+          role="button"
+          type="button"
+        >
+          Filter by Category
+        </button>
+
+        <div
+          class="dropdown-content"
+          role="menu"
+          tabindex="-1"
+          aria-controls="addFilterMenu"
+          aria-labelledby="addFilterDropdown"
+        >
+          test
+          <button
+            type="button"
+            aria-label="close">&times;</button>
+          <input type="text" />
+        </div>
+      </div>
+    </div>
   </div>
 
   <script type="text/javascript"
