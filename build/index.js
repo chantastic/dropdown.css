@@ -1,39 +1,103 @@
-function closeDropdown(node) {
-  node.setAttribute("aria-expanded", "false");
-  node.querySelector("[aria-haspopup]").focus();
+const closest = require("element-closest");
+
+function closeAllPopups() {
+  const expandedPopups = document.querySelectorAll("[aria-expanded=true]");
+  return expandedPopups.forEach(e => e.setAttribute("aria-expanded", "false"));
 }
 
-function toggleDropdown(node) {
-  if (node.getAttribute("aria-expanded") === "false") {
-    node.setAttribute("aria-expanded", "true");
-    node.querySelector("[aria-label=close]").focus();
-  } else {
-    node.setAttribute("aria-expanded", "false");
+function focusCloseLabel(el) {
+  return el.querySelector("[aria-label='close']").focus();
+}
+
+function closePopup(el) {
+  el.setAttribute("aria-expanded", "false");
+  el.querySelector("[aria-haspopup]").focus();
+  return;
+}
+
+function togglePopup(el) {
+  if (el.getAttribute("aria-expanded") === "false") {
+    el.setAttribute("aria-expanded", "true");
+    el.querySelector("[aria-label=close]").focus();
+    return;
+  }
+
+  return el.setAttribute("aria-expanded", "false");
+}
+
+function handleHasPopupEvent({ target, type, keyCode }) {
+  const popupRoot = target.closest("[aria-expanded]");
+
+  if (type === "click") {
+    closeAllPopups();
+    return togglePopup(popupRoot);
   }
 }
 
-function handleDropdownEvents({ target, type, keyCode }) {
-  const dropdownRootNode = this;
+function handleLabelEvent({ target, type, keyCode }) {
+  const popupRoot = target.closest("[aria-expanded]");
 
   if (
     keyCode === 27 &&
     type === "keyup" &&
-    dropdownRootNode.classList.contains("dropdown")
+    target.getAttribute("aria-label") === "close"
   ) {
-    closeDropdown(dropdownRootNode);
+    return closePopup(popupRoot);
   }
 
-  if (type === "click" && target.classList.contains("dropdown")) {
-    closeDropdown(dropdownRootNode);
-  }
-
-  if (type === "click" && target.getAttribute("aria-haspopup") === "true") {
-    toggleDropdown(dropdownRootNode);
+  if (
+    keyCode === 32 &&
+    type === "keyup" &&
+    target.getAttribute("aria-label") === "close"
+  ) {
+    return closePopup(popupRoot);
   }
 
   if (type === "click" && target.getAttribute("aria-label") === "close") {
-    closeDropdown(dropdownRootNode);
+    return closePopup(popupRoot);
   }
 }
 
-module.exports = { handleDropdownEvents: handleDropdownEvents };
+function handleExpandedEvent({ target, type }) {
+  const popupRoot = target.closest("[aria-expanded]");
+
+  if (type === "click" && target.getAttribute("aria-expanded") === "true") {
+    return closePopup(popupRoot);
+  }
+}
+
+function handleInsideExpandedEvent({ target, type, keyCode }) {
+  const popupRoot = target.closest("[aria-expanded]");
+
+  if (keyCode === 27 && type === "keyup" && popupRoot) {
+    return focusCloseLabel(popupRoot);
+  }
+}
+
+function handleAriaPopup(e) {
+  if (!e.target) return;
+
+  const popupRoot = e.target.closest("[aria-expanded]");
+
+  if (e.target.getAttribute("aria-haspopup")) {
+    return handleHasPopupEvent(e);
+  }
+
+  if (e.target.getAttribute("aria-label")) {
+    return handleLabelEvent(e);
+  }
+
+  if (e.target.getAttribute("aria-expanded")) {
+    return handleExpandedEvent(e);
+  }
+
+  if (popupRoot) {
+    return handleInsideExpandedEvent(e);
+  }
+
+  if (!popupRoot) {
+    return closeAllPopups();
+  }
+}
+
+module.exports = { handleAriaPopup };
